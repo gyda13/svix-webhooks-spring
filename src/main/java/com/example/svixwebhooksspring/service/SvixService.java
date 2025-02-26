@@ -173,4 +173,15 @@ public class SvixService {
 
         return messageOutList;
     }
+
+    public DashboardAccessOut getDashboardAuth(String appId) {
+        DashboardAccessOut dashboardAccessOut;
+        try {
+            dashboardAccessOut = svix.getAuthentication().dashboardAccess(appId);
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
+        return dashboardAccessOut;
+    }
+
 }

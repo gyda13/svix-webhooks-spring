@@ -104,4 +104,9 @@ public class SvixController {
     public ResponseEntity<List<MessageOut>> getAppMessages(@PathVariable String appId) {
         return ResponseEntity.ok(svixService.getAppMessages(appId));
     }
+
+    @GetMapping("/apps/{appId}/dashboard-access")
+    public ResponseEntity<DashboardAccessOut> getDashboardAuth(@PathVariable String appId) {
+        return ResponseEntity.ok(svixService.getDashboardAuth(appId));
+    }
 }
