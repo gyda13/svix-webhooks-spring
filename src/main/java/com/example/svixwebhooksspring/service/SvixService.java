@@ -68,10 +68,11 @@ public class SvixService {
         return applicationOutList;
     }
 
-    public EventTypeOut createEvent(String event, String description) {
+    public EventTypeOut createEvent(String event, String description, String featureFlag) {
         EventTypeOut eventTypeOut;
         try {
-            eventTypeOut = svix.getEventType().create(new EventTypeIn().name(event).description(description));
+            eventTypeOut = svix.getEventType().create(
+                    new EventTypeIn().name(event).description(description).featureFlag(featureFlag));
         } catch (ApiException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -205,10 +206,11 @@ public class SvixService {
         return messageOutList;
     }
 
-    public AppPortalAccessOut appPortalAccess(String appId) {
+    public AppPortalAccessOut appPortalAccess(String appId, Set<String> featureFlags) {
         AppPortalAccessOut appPortalAccessOut;
         try {
-            appPortalAccessOut = svix.getAuthentication().appPortalAccess(appId, new AppPortalAccessIn());
+            appPortalAccessOut = svix.getAuthentication().appPortalAccess(appId,
+                    new AppPortalAccessIn().featureFlags(featureFlags));
         } catch (ApiException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

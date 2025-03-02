@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller("/svix")
 @AllArgsConstructor
@@ -42,9 +43,10 @@ public class SvixController {
     @PostMapping("/events")
     public ResponseEntity<EventTypeOut> createEvent(
             @RequestParam String event,
-            @RequestParam String description
+            @RequestParam String description,
+            @RequestParam String featureFlag
     ) {
-        return ResponseEntity.ok(svixService.createEvent(event, description));
+        return ResponseEntity.ok(svixService.createEvent(event, description, featureFlag));
     }
 
     @GetMapping("/events")
@@ -105,8 +107,8 @@ public class SvixController {
         return ResponseEntity.ok(svixService.getAppMessages(appId));
     }
 
-    @GetMapping("/apps/{appId}/portal-access")
-    public ResponseEntity<AppPortalAccessOut> appPortalAccess(@PathVariable String appId) {
-        return ResponseEntity.ok(svixService.appPortalAccess(appId));
+    @PostMapping("/apps/{appId}/portal-access")
+    public ResponseEntity<AppPortalAccessOut> appPortalAccess(@PathVariable String appId, @RequestBody Set<String> featureFlags) {
+        return ResponseEntity.ok(svixService.appPortalAccess(appId, featureFlags));
     }
 }
