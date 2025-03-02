@@ -30,7 +30,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation "com.svix:svix:0.30.0"
+    implementation "com.svix:svix:1.61.0"
     implementation("org.springframework.boot:spring-boot-starter-web")
 }
 

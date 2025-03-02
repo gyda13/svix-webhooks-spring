@@ -1,12 +1,17 @@
 package com.example.svixwebhooksspring.service;
 
 import com.svix.*;
+import com.svix.api.ApplicationListOptions;
+import com.svix.api.EndpointListOptions;
+import com.svix.api.EventTypeListOptions;
+import com.svix.api.MessageListOptions;
 import com.svix.exceptions.ApiException;
 import com.svix.models.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
@@ -18,7 +23,7 @@ public class SvixService {
 
     public SvixService(@Value("${svix.token}") String svixToken, @Value("${svix.url}") String svixUrl) {
         SvixOptions options = new SvixOptions();
-        options.setDebugUrl(svixUrl);
+        options.setServerUrl(svixUrl);
         this.svix = new Svix(svixToken, options);
     }
 
@@ -32,6 +37,8 @@ public class SvixService {
             );
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return appOut;
@@ -43,6 +50,8 @@ public class SvixService {
             appOut = svix.getApplication().get(appId);
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return appOut;
     }
@@ -52,6 +61,8 @@ public class SvixService {
         try {
             applicationOutList = svix.getApplication().list(new ApplicationListOptions()).getData();
         } catch (ApiException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return applicationOutList;
@@ -63,6 +74,8 @@ public class SvixService {
             eventTypeOut = svix.getEventType().create(new EventTypeIn().name(event).description(description));
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return eventTypeOut;
     }
@@ -72,6 +85,8 @@ public class SvixService {
         try {
             eventTypeOutList = svix.getEventType().list(new EventTypeListOptions()).getData();
         } catch (ApiException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return eventTypeOutList;
@@ -91,6 +106,8 @@ public class SvixService {
             );
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return endpointOut;
@@ -102,6 +119,8 @@ public class SvixService {
             endpointOutList = svix.getEndpoint().list(appId, new EndpointListOptions());
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return endpointOutList;
     }
@@ -111,6 +130,8 @@ public class SvixService {
         try {
             endpointOut = svix.getEndpoint().get(appId, endpointId);
         } catch (ApiException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return endpointOut;
@@ -122,6 +143,8 @@ public class SvixService {
             endpointSecretOut = svix.getEndpoint().getSecret(appId, endpointId);
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return endpointSecretOut;
     }
@@ -130,6 +153,8 @@ public class SvixService {
         try {
             svix.getEndpoint().delete(appId, endpointId);
         } catch (ApiException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -142,6 +167,8 @@ public class SvixService {
                             .eventType(event)
                             .payload(payload));
         } catch (ApiException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -159,6 +186,8 @@ public class SvixService {
                                 .payload(payload));
             } catch (ApiException e) {
                 throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -169,19 +198,23 @@ public class SvixService {
             messageOutList = svix.getMessage().list(appId, new MessageListOptions()).getData();
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return messageOutList;
     }
 
-    public DashboardAccessOut getDashboardAuth(String appId) {
-        DashboardAccessOut dashboardAccessOut;
+    public AppPortalAccessOut appPortalAccess(String appId) {
+        AppPortalAccessOut appPortalAccessOut;
         try {
-            dashboardAccessOut = svix.getAuthentication().dashboardAccess(appId);
+            appPortalAccessOut = svix.getAuthentication().appPortalAccess(appId, new AppPortalAccessIn());
         } catch (ApiException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return dashboardAccessOut;
+        return appPortalAccessOut;
     }
 
 }
